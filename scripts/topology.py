@@ -18,8 +18,8 @@ def start(ip="127.0.0.1",port=6633):
     net = Mininet(switch=OVSSwitch, controller=ctrlr)
     c1 = net.addController('c1')
 
-    HQ_CONFIG = { bw : 10, loss : 0 }
-    LQ_CONFIG = { bw : 1 , loss : 2 }
+    HQ_CONFIG = { 'bw' : 10, 'loss' : 0 }
+    LQ_CONFIG = { 'bw' : 1 , 'loss' : 2 }
 
     ####### End of static Mininet prologue ######
 
@@ -81,7 +81,7 @@ def start(ip="127.0.0.1",port=6633):
     # Enter CLI mode
     output("Network ready\n")
     output("Press Ctrl-d or type exit to quit\n")
-    CLI(net)
+    CLI()
     net.stop()
 
 start()
