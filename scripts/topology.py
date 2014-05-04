@@ -53,7 +53,7 @@ def start(ip="127.0.0.1",port=6633):
     net.addLink(s2, pe2, 1, 1)
 
     s3 = net.addSwitch('s5')
-    pe3 = net.addSwitch('pe6')
+    pe3 = net.addSwitch('s6')
 
     net.addLink(h5, s3, 0, 2)
     net.addLink(h6, s3, 0, 3)
@@ -62,8 +62,10 @@ def start(ip="127.0.0.1",port=6633):
     net.addLink(s3, pe3, 1, 1)
 
     net.addLink(pe1, pe3, 2, 2)
+    net.addLink(pe1, pe3, 3, 3)
 
     net.addLink(pe2, pe3, 2, 4)
+    net.addLink(pe2, pe3, 2, 5)
 
     ###### Start of static Mininet epilogue ######
     # Set up logging etc.
