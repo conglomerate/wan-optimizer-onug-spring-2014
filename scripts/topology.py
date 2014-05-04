@@ -39,21 +39,21 @@ def start(ip="127.0.0.1",port=6633):
     h8 = net.addHost('h8', mac=eth8, ip=ip8)
 
     s1 = net.addSwitch('s1')
-    pe1 = net.addSwitch('pe1')
+    pe1 = net.addSwitch('s2')
 
     net.addLink(h1, s1, 0, 2)
     net.addLink(h2, s1, 0, 3)
     net.addLink(s1, pe1, 1, 1)
 
-    s2 = net.addSwitch('s2')
-    pe2 = net.addSwitch('pe2')
+    s2 = net.addSwitch('s3')
+    pe2 = net.addSwitch('s4')
 
     net.addLink(h3, s2, 0, 2)
     net.addLink(h4, s2, 0, 3)
     net.addLink(s2, pe2, 1, 1)
 
-    s3 = net.addSwitch('s3')
-    pe3 = net.addSwitch('pe3')
+    s3 = net.addSwitch('s5')
+    pe3 = net.addSwitch('pe6')
 
     net.addLink(h5, s3, 0, 2)
     net.addLink(h6, s3, 0, 3)
