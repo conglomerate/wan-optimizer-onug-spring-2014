@@ -10,16 +10,27 @@ from mininet.cli import CLI
 from mininet.net import Mininet
 
 def start(ip="127.0.0.1",port=6633):
+    cmap = None
 
-    ctrlr = lambda n: RemoteController(n, 
-                                       defaultIP=ip,
-                                       port=port, 
-                                       inNamespace=False)
-    net = Mininet(switch=OVSSwitch, controller=ctrlr)
-    c1 = net.addController('c1')
+    class MultiSwitch(OVSSwitch):
+        def start(self, controllers):
+            print "%s : %s" % (self.name, str(cmap.get(self.name, [])))
+            return OVSSwitch.start(self, cmap.get(self.name, []))
 
-    HQ_CONFIG = { 'bw' : 10, 'loss' : 0 }
-    LQ_CONFIG = { 'bw' : 1 , 'loss' : 2 }
+    ctrlr_0 = lambda n: RemoteController(n, defaultIP='192.168.0.1', port=port, inNamespace=False)
+    ctrlr_1 = lambda n: RemoteController(n, defaultIP=ip, port=port, inNamespace=False)
+    net = Mininet(switch=MultiSwitch)
+    c0 = net.addController('c0', controller=ctrlr_0)
+    c1 = net.addController('c1', controller=ctrlr_1)
+
+    cmap = {
+        's1' : [c1],
+        's3' : [c1],
+        's5' : [c1],
+    }
+
+    HQ_CONFIG = { 'bw' : 10 }
+    LQ_CONFIG = { 'bw' : 1  }
 
     ####### End of static Mininet prologue ######
 
@@ -64,11 +75,11 @@ def start(ip="127.0.0.1",port=6633):
     net.addLink(h8, s3, 0, 5)
     net.addLink(s3, pe3, 1, 1)
 
-    net.addLink(pe1, pe3, 2, 2, **HQ_CONFIG)
-    net.addLink(pe1, pe3, 3, 3, **LQ_CONFIG)
+    net.addLink(pe1, pe3, 2, 2)
+    net.addLink(pe1, pe3, 3, 3)
 
-    net.addLink(pe2, pe3, 2, 4, **HQ_CONFIG)
-    net.addLink(pe2, pe3, 3, 5, **LQ_CONFIG)
+    net.addLink(pe2, pe3, 2, 4)
+    net.addLink(pe2, pe3, 3, 5)
 
     ###### Start of static Mininet epilogue ######
     # Set up logging etc.
@@ -81,7 +92,7 @@ def start(ip="127.0.0.1",port=6633):
     # Enter CLI mode
     output("Network ready\n")
     output("Press Ctrl-d or type exit to quit\n")
-    CLI()
+    CLI(net)
     net.stop()
 
 start()
