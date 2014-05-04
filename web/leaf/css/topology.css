@@ -1,0 +1,89 @@
+#viz {
+    margin-top: -25px;
+}
+
+#ui-container {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 970px; /* copy container width */
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+#labels text {
+  font: bold 16px sans-serif;
+  pointer-events: none;
+}
+
+path.link {
+  fill: none;
+}
+
+marker.mid {
+  fill : black;
+}
+
+marker#licensing {
+  fill: green;
+}
+
+path.link.licensing {
+  stroke: green;
+}
+
+path.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+.node circle, .node rect {
+  stroke-width: 1.0px;
+}
+
+.node .host {
+  stroke-width: 4.0px;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-opacity: .8;
+}
+
+.d3-tip {
+  line-height: 1;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+.d3-tip .strong {
+  display: block;
+  line-height: 1.5;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* put a cute triangle speech bubble underneath the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip.n:after {
+  margin: -3px 0 0 0;
+  top: 100%;
+  left: 0;
+}

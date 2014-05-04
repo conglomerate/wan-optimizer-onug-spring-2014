@@ -1,0 +1,299 @@
+<div id="container" class="container">
+
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  
+<div style="text-align: center;">
+  <div class="btn-group">
+    <button
+        type="button"
+        class="btn btn-default"
+        ng-click="showTapRules()"
+        id="showTapRulesButton">
+        Tap Rules</button>
+    <button type="button" class="btn btn-default" ng-click="showIngressLocations()"
+        id="showIngressLocationsButton">Ingress Ports</button>
+    <button type="button" class="btn btn-default" ng-click="showMonitorLocations()"
+        id="showMonitorLocationsButton">Monitor Destinations</button>
+  </div>
+  </div>
+<table id="tapRulesTable" class="table table-hover">
+<thead>
+  <tr>
+    <th>Enabled?</th>
+    <th>Name</th>
+    <th>Ingress Ports</th>
+    <th>Filter</th>
+    <th>Destinations</th>
+    <th>
+      <button class="btn btn-default" data-toggle="modal" data-target="#tapModal">
+      <span class="glyphicon glyphicon-plus"></span>Add Tap
+      </button>
+    </th>
+  </tr>
+</thead>
+<tbody>
+    <tr ng-repeat="tapRule in tapRules">
+        <td>
+	  <input type="checkbox" name="selected" ng-checked="isEnabled(tapRule)" ng-click="updateEnabled($event, tapRule)">
+	</td>
+        <td>{{tapRule.tapRuleName}}</td>
+	<td>{{showIngressPorts(tapRule)}}</td>
+        <td>{{tapRule.tapFilter}}</td>
+        <td>{{tapRule.tapDests.join(", ")}}</td>
+        <td>
+            <button class="btn btn-default" ng-click="ngDeleteTap(tapRule)">delete</button>
+        </td>
+    </tr>
+</tbody>
+</table>
+
+<table id="ingressLocationsTable" class="table table-hover">
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>Switch</th>
+    <th>Port</th>
+    <th>
+        <button class="btn btn-default" data-toggle="modal" data-target="#ingressModal">
+            <span class="glyphicon glyphicon-plus"></span>Add Ingress Port
+        </button>
+    </th>
+  </tr>
+</thead>
+<tbody>
+<tr ng-repeat="ingressPort in tapPorts | filter:{tapPortStatus:'TapSource'}">
+    <td>{{ingressPort.tapPortName}}</td>
+    <td>{{ingressPort.tapPortLocation.switch}}</td>
+    <td>{{ingressPort.tapPortLocation.port}}</td>
+    <td>
+      <button class="btn btn-default" ng-click="deleteIngressPort(ingressPort)">delete</button>
+    </td>
+</tr>
+</tbody>
+</table>
+
+<table id="monitorLocationsTable" class="table table-hover">
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>Switch</th>
+    <th>Port</th>
+    <th>
+      <button class="btn btn-default" data-toggle="modal" data-target="#monitorLocationModal">
+      <span class="glyphicon glyphicon-plus"></span>Add Monitor Destination
+      </button>
+    </th>
+  </tr>
+</thead>
+<tbody>
+<tr ng-repeat="monitorLoc in monitorLocs">
+    <td>{{monitorLoc.tapPortName}}</td>
+    <td>{{monitorLoc.tapPortLocation.switch}}</td>
+    <td>{{monitorLoc.tapPortLocation.port}}</td>
+    <td>
+      <button class="btn btn-default" ng-click="deleteMonitorLoc(monitorLoc)" ng-disabled="!deletable(monitorLoc)">delete</button>
+    </td>
+</tr></tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="tapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Tap Rule</h4>
+      </div>
+      <div class="modal-body">
+	<!-- begin form -->
+	<form class="form-horizontal" role="form" id="addTapForm">
+      <div class="form-group">
+    <label for="inputTapName" class="col-sm-3 control-label">Tap rule name</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="inputTapName" ng-model="ngInputTapName"
+      placeholder="Tap rule name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputIngressPorts2" class="col-sm-3 control-label">
+    Ingress Ports
+    </label>
+    <div class="col-sm-9">
+      <select class="form-control"
+	ng-model="selectedIngressPorts"
+	multiple
+	ng-options="inp.tapPortName+' (switch '+inp.tapPortLocation.switch+', port: '+inp.tapPortLocation.port+')' for inp in namedIngressPorts"></select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputFilter" class="col-sm-3 control-label">Traffic filter</label>
+    <div class="col-sm-9">
+        <input type="text" class="form-control" id="inputFilter"  ng-model="ngInputFilter"
+            placeholder="Traffic filter (use pcap filter expressions)">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEgressPorts2" class="col-sm-3 control-label">
+    Destinations
+    </label>
+    <div class="col-sm-9">
+      <select class="form-control"
+	id="inputEgressPorts2"
+	ng-model="selectedEgressPorts"
+	multiple
+	ng-options="inp.tapPortName+' (switch '+inp.tapPortLocation.switch+', port: '+inp.tapPortLocation.port+')' for inp in monitorLocs"></select>
+    </div>
+  </div>
+  </form>
+  <!-- end form -->
+  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="ngAddTap();">
+	 Save changes
+	</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="monitorLocationModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Traffic Monitor Destination</h4>
+            </div>
+            <div class="modal-body">
+
+                <!-- begin form -->
+                <form class="form-horizontal" role="form" id="addTapDestForm">
+                    <div class="form-group">
+                        <label
+                            for="inputMonitorLocationName"
+                            class="col-sm-3 control-label">
+                            Destination Name</label>
+                        <div class="col-sm-9">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="inputMonitorLocationName"
+			        ng-model="ngInputMonitorLocationName"
+                                placeholder="Monitor Destination Name">
+                        </div>
+                    </div>
+		    <div class="form-group">
+		      <label for="inputMonitorLocationSwitchPort" class="col-sm-3 control-label">Location</label>
+		      <div class="col-sm-9">
+			<select
+			  class="form-control"
+			  id="inputMonitorLocationSwitchPort"
+			  ng-model="inputMonitorLocationSwitchPort"
+			  ng-options="'switch '+inp.tapPortLocation.switch+', port: '+inp.tapPortLocation.port for inp in normalPorts">
+			</select>
+		      </div>
+		    </div>
+                </form>
+                    <!-- end form -->
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+	            ng-click="addMonitorLocationFromForm()">
+                    Save changes
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="ingressModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Ingress Tap Port</h4>
+            </div>
+            <div class="modal-body">
+                <!-- begin form -->
+                <form class="form-horizontal" role="form" id="addIngressPortForm">
+                    <div class="form-group">
+		      <label
+		       for="inputTapLocationName"
+		       class="col-sm-3 control-label">
+		       Ingress Name
+		      </label>
+                        <div class="col-sm-9">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="inputTapLocationName"
+			        ng-model="ngInputTapLocationName"
+                                placeholder="Ingress Name">
+                                </div>
+                    </div>
+		    <div class="form-group">
+		      <label for="inputTapLocationSwitchPort" class="col-sm-3 control-label">Location</label>
+		      <div class="col-sm-9">
+			<select
+			  class="form-control"
+			  id="inputTapLocationSwitchPort"
+			  ng-model="inputTapLocationSwitchPort"
+			  ng-options="'switch '+inp.tapPortLocation.switch+', port: '+inp.tapPortLocation.port for inp in normalPorts">
+			</select>
+		      </div>
+		    </div>
+                </form>
+                <!-- end form -->
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    ng-click="addIngressPortFromForm()">
+                    Save changes
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+</div> <!-- container -->
+
+
