@@ -18,6 +18,9 @@ def start(ip="127.0.0.1",port=6633):
     net = Mininet(switch=OVSSwitch, controller=ctrlr)
     c1 = net.addController('c1')
 
+    HQ_CONFIG = { bw : 10, loss : 0 }
+    LQ_CONFIG = { bw : 1 , loss : 2 }
+
     ####### End of static Mininet prologue ######
 
     eth1, ip1 = '00:00:00:00:00:01', '192.168.0.1'
@@ -61,11 +64,11 @@ def start(ip="127.0.0.1",port=6633):
     net.addLink(h8, s3, 0, 5)
     net.addLink(s3, pe3, 1, 1)
 
-    net.addLink(pe1, pe3, 2, 2)
-    net.addLink(pe1, pe3, 3, 3)
+    net.addLink(pe1, pe3, 2, 2, **HQ_CONFIG)
+    net.addLink(pe1, pe3, 3, 3, **LQ_CONFIG)
 
-    net.addLink(pe2, pe3, 2, 4)
-    net.addLink(pe2, pe3, 3, 5)
+    net.addLink(pe2, pe3, 2, 4, **HQ_CONFIG)
+    net.addLink(pe2, pe3, 3, 5, **LQ_CONFIG)
 
     ###### Start of static Mininet epilogue ######
     # Set up logging etc.
