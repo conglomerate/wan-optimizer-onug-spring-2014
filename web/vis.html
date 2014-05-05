@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<head>
+<style>
+svg {
+  font-family: "Helvetica Neue", Helvetica, Aria, sans-serif;
+  font-size: 10px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+path.data {
+  fill: transparent;
+  stroke: grey;
+  stroke-width: 2;
+}
+
+path.high {
+    stroke: blue;
+}
+
+path.low {
+    stroke: red;
+}
+
+#initial svg .data-1 {
+  stroke: rgba(128, 128, 128, 0.4);
+}
+</style>
+</head>
+
+<body>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script>
+        var margin = { 'top' : 20, 'bottom' : 20, 'right' : 20, 'left' : 40 },
+            height = 300,
+            width = 800;
+
+        var xscale = d3.scale.linear().domain([0, 10]).range([0, width - margin.right - margin.left]),
+            yscale = d3.scale.linear().domain([0, 100]).range([height - margin.top - margin.bottom, 0]);
+
+        var xaxis = d3.svg.axis()
+            .scale(xscale)
+            .orient('bottom')
+
+        var yaxis = d3.svg.axis()
+            .scale(yscale)
+            .orient('left')
+
+        function chart(selection) { 
+          console.log('called');
+          selection.each(function(data, i) {
+            console.log('iter', i);
+            var svg = d3.select(this).selectAll('svg')
+                .data(data);
+
+            var svge = svg.enter().append('svg')
+                .attr('width', width)
+                .attr('height', height)
+              .append('g')
+                .attr('id', 'wrapper')
+                .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+
+            svge.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', 'translate(' + [0, height - margin.bottom - margin.top] + ')')
+                .call(xaxis);
+
+            svge.append('g')
+                .attr('class', 'y axis')
+                .call(yaxis);
+
+            var high = svg.select('#wrapper').selectAll('path.high')
+                .data(function(d) { return [d]; });
+
+            high.enter().append('path')
+                .attr('class', 'data high')
+
+            high
+                .attr('d', d3.svg.line()
+                  .x(function(d, i) { return xscale(i); })
+                  .y(function(d, i) { console.log(d, i); return yscale(d.hi); }))
+
+            var low = svg.select('#wrapper').selectAll('path.low')
+                .data(function(d) { return [d]; });
+
+            low.enter().append('path')
+                .attr('class', 'data low')
+
+            low
+                .attr('d', d3.svg.line()
+                  .x(function(d, i) { return xscale(i); })
+                  .y(function(d, i) { return yscale(d.lo); }))
+
+            var both = svg.select('#wrapper').selectAll('path.both')
+                .data(function(d) { return [d]; });
+
+            both.enter().append('path')
+                .attr('class', 'data both')
+
+            both
+                .attr('d', d3.svg.line()
+                  .x(function(d, i) { return xscale(i); })
+                  .y(function(d, i) { return yscale(d.hi + d.lo); }))
+          });
+        }
+
+        var pkt = { last : null, data : [] },
+            byt = { last : null, data : [] };
+
+        
+        function update(latest) {
+            var pkt_latest = { hi: latest[0][1][0], lo : latest[1][1][0] },
+                byt_latest = { hi: latest[0][1][1], lo : latest[1][1][1] };
+           
+            if (pkt.last === null) {
+                pkt.last = pkt_latest;
+                pkt.data = [pkt.last];
+            } else {
+                console.log(pkt_latest, pkt.last);
+                pkt.data.push({ hi : pkt_latest.hi - pkt.last.hi, lo : pkt_latest.lo - pkt.last.lo });
+                pkt.last = pkt_latest;
+            }
+
+            if (byt.last === null) {
+                byt.last = byt_latest
+                byt.data = [byt.last];
+            } else {
+                byt.data.push({ hi : byt_latest.hi - byt.last.hi, lo : byt_latest.lo - byt.last.lo });
+                byt.last = byt_latest;
+            }
+        }
+
+        d3.select('body').datum([pkt.data, byt.data]).call(chart);
+
+        var interval = setInterval(function() {
+          d3.json('/flowcounters', function(data) {
+            update(data);
+            d3.select('body').datum([pkt.data, byt.data]).call(chart);
+          })
+        }, 1000);
+    </script>
+</body>
