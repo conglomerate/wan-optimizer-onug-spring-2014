@@ -118,8 +118,8 @@ path.low {
             byt = { last : null, data : [] };
 
         function update(latest) {
-            var pkt_latest = { hi: (latest.HIGH ? latest.HIGH[0] : 0), lo : (latest.LOW?latest.LOW[0]:0)  },
-                byt_latest = { hi: (latest.HIGH ? latest.HIGH[1] : 0), lo : (latest.LOW?latest.LOW[1]:0)};
+            var pkt_latest = { hi: (latest.HIGH ? latest.HIGH[0] : pkt.last.hi), lo : (latest.LOW ? latest.LOW[0] : pkt.last.lo) },
+                byt_latest = { hi: (latest.HIGH ? latest.HIGH[1] : byt.last.hi), lo : (latest.LOW ? latest.LOW[1] : byt.last.lo) };
            
             if (pkt.last === null) {
                 pkt.last = pkt_latest;
