@@ -119,7 +119,6 @@ path.low {
            
             if (pkt.last === null) {
                 pkt.last = pkt_latest;
-                pkt.data = [pkt.last];
             } else {
                 console.log(pkt_latest, pkt.last);
                 pkt.data.push({ hi : pkt_latest.hi - pkt.last.hi, lo : pkt_latest.lo - pkt.last.lo });
@@ -128,7 +127,6 @@ path.low {
 
             if (byt.last === null) {
                 byt.last = byt_latest
-                byt.data = [byt.last];
             } else {
                 byt.data.push({ hi : byt_latest.hi - byt.last.hi, lo : byt_latest.lo - byt.last.lo });
                 byt.last = byt_latest;
