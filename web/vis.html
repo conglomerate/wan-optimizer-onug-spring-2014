@@ -33,6 +33,30 @@ path.low {
 #initial svg .data-1 {
   stroke: rgba(128, 128, 128, 0.4);
 }
+
+.group {
+    height 60px;
+}
+
+.group textarea, .group button, .group div {
+    float: left;
+    margin: 2px;
+}
+
+button {
+    width: 100%;
+    height: 30px;
+}
+
+textarea {
+    width: 40%;
+    height: 60px;
+}
+
+#legend {
+    float: left;
+    width: 40%;
+}
 </style>
 </head>
 
@@ -150,18 +174,41 @@ path.low {
           })
         }, 2000);
     </script>
-    <table>
-        <tr>
-            <td style="background-color:gray">&nbsp;</td>
-            <td>total throughput</td>
-        </tr>
-        <tr>
-            <td style="background-color:blue">&nbsp;</td>
-            <td>high quality throughput</td>
-        </tr>
-        <tr>
-            <td style="background-color:red">&nbsp;</td>
-            <td>low quality throughput</td>
-        </tr>
-    </table>
+    <div class="group">
+      <div>
+          <button id="set">set</button>
+          <button id="clear">clear</button>
+      </div>
+      <textarea rows="4"></textarea>
+      <table id="legend">
+          <tr>
+              <td style="background-color:gray">&nbsp;</td>
+              <td>total throughput</td>
+          </tr>
+          <tr>
+              <td style="background-color:blue">&nbsp;</td>
+              <td>high quality throughput</td>
+          </tr>
+          <tr>
+              <td style="background-color:red">&nbsp;</td>
+              <td>low quality throughput</td>
+          </tr>
+      </table>
+    </div>
+
+    <script>
+        d3.select('.group button#set').on('click', function() {
+            var data = JSON.stringify({ "component": "policy", "method": "write", "value":[{"trafficType":{"asserts":[{"field":"IP_DST","arg1":-1062731771,"arg2":32}]},"quality":0}] });
+            d3.xhr('/db')
+                .header("Content-Type", "application/json")
+                .post(data, function(error, data) { });
+        });
+
+        d3.select('.group button#clear').on('click', function() {
+            var data = JSON.stringify({ "component": "policy", "method": "write", "value":[] });
+            d3.xhr('/db')
+                .header("Content-Type", "application/json")
+                .post(data, function(error, data) { });
+        });
+    </script>
 </body>
