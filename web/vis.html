@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <head>
+<link rel="stylesheet" href="/maple/bootstrap/css/bootstrap.css">
+<script type="text/javascript" src="/maple/d3/d3.v3.js" charset="utf-8"></script>
 <style>
 body {
   font-family: "Helvetica Neue", Helvetica, Aria, sans-serif;
@@ -23,11 +25,11 @@ path.data {
 }
 
 path.high {
-    stroke: blue;
+    stroke: red; 
 }
 
 path.low {
-    stroke: red;
+    stroke: blue;
 }
 
 #initial svg .data-1 {
@@ -61,10 +63,7 @@ textarea {
 </head>
 
 <body>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
-
-
         var margin = { 'top' : 20, 'bottom' : 20, 'right' : 20, 'left' : 80 },
             height = 300,
             width = 800,
@@ -106,6 +105,18 @@ textarea {
             svg.select('#wrapper .x.axis').call(xaxis);
             svg.select('#wrapper .y.axis').call(yaxis);
 
+            var both = svg.select('#wrapper').selectAll('path.both')
+                .data(function(d) { return [d]; });
+
+            both.enter().append('path')
+                .attr('class', 'data both')
+
+            both
+                .attr('d', d3.svg.line()
+                  .x(function(d, i) { return xscale(i); })
+                  .y(function(d, i) { return yscale(d.hi + d.lo); }))
+
+
             var high = svg.select('#wrapper').selectAll('path.high')
                 .data(function(d) { return [d]; });
 
@@ -128,34 +139,61 @@ textarea {
                   .x(function(d, i) { return xscale(i); })
                   .y(function(d, i) { return yscale(d.lo); }))
 
-            var both = svg.select('#wrapper').selectAll('path.both')
-                .data(function(d) { return [d]; });
-
-            both.enter().append('path')
-                .attr('class', 'data both')
-
-            both
-                .attr('d', d3.svg.line()
-                  .x(function(d, i) { return xscale(i); })
-                  .y(function(d, i) { return yscale(d.hi + d.lo); }))
+            
           });
         }
 
-        var pkt = { last : null, data : [] },
-            byt = { last : null, data : [] };
-
+        var byt = { last : null, data : [] },
+            last_hi = null,
+            last_lo = null;
+/*
         function update(latest) {
-            var pkt_latest = { hi: (latest.HIGH ? latest.HIGH[0] : pkt.last.hi), lo : (latest.LOW ? latest.LOW[0] : pkt.last.lo) },
-                byt_latest = { hi: (latest.HIGH ? latest.HIGH[1] : byt.last.hi), lo : (latest.LOW ? latest.LOW[1] : byt.last.lo) };
-           
-            if (pkt.last === null) {
-                pkt.last = pkt_latest;
+            var hi_pkt_diff;
+            var hi_byt_diff;
+
+            if (last_hi == null) {
+              hi_pkt_diff = 0;
+              last_hi = latest.HIGH;
             } else {
-                pkt.data.push({ hi : pkt_latest.hi - pkt.last.hi, lo : pkt_latest.lo - pkt.last.lo });
-                if (pkt.data.length > max_points) { pkt.data.shift(); }
-                pkt.last = pkt_latest;
+              if (null == latest.HIGH) {
+                hi_pkt_diff = 0;
+                hi_byt_diff = 0;
+              } else {
+                hi_pkt_diff = latest.HIGH[0] - last_hi[0];
+                hi_byt_diff = latest.HIGH[1] - last_hi[1];
+                last_hi_pkt = latest.HIGH;
+              }
             }
 
+            var lo_pkt_diff;
+            var lo_byt_diff;
+
+            if (last_lo == null) {
+              lo_pkt_diff = 0;
+              last_lo = latest.LOW;
+            } else {
+              if (null == latest.LOW) {
+                lo_pkt_diff = 0;
+                lo_byt_diff = 0;
+              } else {
+                lo_pkt_diff = latest.LOW[0] - last_lo[0];
+                lo_byt_diff = latest.LOW[1] - last_lo[1];
+                last_lo_pkt = latest.LOW;
+              }
+            }
+           // alert(JSON.stringify({ hi: hi_byt_diff, lo: lo_byt_diff }));
+            pkt.data.push( { hi: hi_pkt_diff, lo: lo_pkt_diff } );
+            byt.data.push( { hi: hi_byt_diff, lo: lo_byt_diff } );
+        } 
+*/
+        function update(latest) {
+
+            // push data always.
+            // determine what to push onto data
+
+            var byt_latest = { hi: (latest.HIGH ? latest.HIGH[1] : byt.last.hi)
+                             , lo : (latest.LOW ? latest.LOW[1] : byt.last.lo) };
+           
             if (byt.last === null) {
                 byt.last = byt_latest
             } else {
@@ -170,27 +208,30 @@ textarea {
         var interval = setInterval(function() {
           d3.json('/flowcounters', function(data) {
             update(data);
+JSON.stringify(byt.data);
             d3.select('body').datum(byt.data).call(chart);
           })
         }, 2000);
     </script>
     <div class="group">
+      
+      <textarea rows="3"></textarea>
       <div>
-          <button id="set">set</button>
-          <button id="clear">clear</button>
+          <button id="set">add app policy</button>
+          <button id="clear">default app policies</button>
       </div>
-      <textarea rows="4"></textarea>
+
       <table id="legend">
           <tr>
               <td style="background-color:gray">&nbsp;</td>
               <td>total throughput</td>
           </tr>
           <tr>
-              <td style="background-color:blue">&nbsp;</td>
+              <td style="background-color:red">&nbsp;</td>
               <td>high quality throughput</td>
           </tr>
           <tr>
-              <td style="background-color:red">&nbsp;</td>
+              <td style="background-color:blue">&nbsp;</td>
               <td>low quality throughput</td>
           </tr>
       </table>
