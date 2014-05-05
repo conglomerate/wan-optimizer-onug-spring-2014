@@ -56,7 +56,8 @@ path.low {
 
         function chart(selection) { 
           selection.each(function(data, i) {
-            yscale = yscale.domain([0, d3.max(data, function(d) { return d.hi + d.lo; })]);
+            yscale = yscale.domain([0, d3.max(data, function(d) { return d.hi +
+          d.lo; }) || 10]);
             yaxis = yaxis.scale(yscale);
             var svg = d3.select(this).selectAll('svg')
                 .data([data]);
@@ -142,7 +143,7 @@ path.low {
         var interval = setInterval(function() {
           d3.json('/flowcounters', function(data) {
             update(data);
-            d3.select('body').datum([pkt.data, byt.data]).call(chart);
+            d3.select('body').datum(byt.data).call(chart);
           })
         }, 1000);
     </script>
