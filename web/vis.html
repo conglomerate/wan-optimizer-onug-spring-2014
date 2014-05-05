@@ -36,11 +36,14 @@ path.low {
 <body>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
+
+
         var margin = { 'top' : 20, 'bottom' : 20, 'right' : 20, 'left' : 40 },
             height = 300,
-            width = 800;
+            width = 800,
+            max_points = 30;
 
-        var xscale = d3.scale.linear().domain([0, 10]).range([0, width - margin.right - margin.left]),
+        var xscale = d3.scale.linear().domain([0, max_points - 1]).range([0, width - margin.right - margin.left]),
             yscale = d3.scale.linear().domain([0, 100]).range([height - margin.top - margin.bottom, 0]);
 
         var xaxis = d3.svg.axis()
@@ -114,14 +117,14 @@ path.low {
 
         
         function update(latest) {
-            var pkt_latest = { hi: latest[0][1][0], lo : latest[1][1][0] },
-                byt_latest = { hi: latest[0][1][1], lo : latest[1][1][1] };
+            var pkt_latest = { hi: (latest.HIGH ? latest.HIGH[0] : 0), lo : (latest.LOW?latest.LOW[0]:0)  },
+                byt_latest = { hi: (latest.HIGH ? latest.HIGH[1] : 0), lo : (latest.LOW?latest.LOW[1]:0)};
            
             if (pkt.last === null) {
                 pkt.last = pkt_latest;
             } else {
                 pkt.data.push({ hi : pkt_latest.hi - pkt.last.hi, lo : pkt_latest.lo - pkt.last.lo });
-                if (pkt.data.length > 10) { pkt.data.shift(); }
+                if (pkt.data.length > max_points) { pkt.data.shift(); }
                 pkt.last = pkt_latest;
             }
 
@@ -129,7 +132,7 @@ path.low {
                 byt.last = byt_latest
             } else {
                 byt.data.push({ hi : byt_latest.hi - byt.last.hi, lo : byt_latest.lo - byt.last.lo });
-                if (byt.data.length > 10) { byt.data.shift(); }
+                if (byt.data.length > max_points) { byt.data.shift(); }
                 byt.last = byt_latest;
             }
         }
