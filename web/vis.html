@@ -55,11 +55,11 @@ path.low {
             .orient('left')
 
         function chart(selection) { 
-          console.log('called');
           selection.each(function(data, i) {
-            console.log('iter', i);
+            yscale = yscale.domain([0, d3.max(data, function(d) { return d.hi + d.lo; })]);
+            yaxis = yaxis.scale(yscale);
             var svg = d3.select(this).selectAll('svg')
-                .data(data);
+                .data([data]);
 
             var svge = svg.enter().append('svg')
                 .attr('width', width)
@@ -70,12 +70,13 @@ path.low {
 
             svge.append('g')
                 .attr('class', 'x axis')
-                .attr('transform', 'translate(' + [0, height - margin.bottom - margin.top] + ')')
-                .call(xaxis);
+                .attr('transform', 'translate(' + [0, height - margin.bottom - margin.top] + ')');
 
             svge.append('g')
-                .attr('class', 'y axis')
-                .call(yaxis);
+                .attr('class', 'y axis');
+
+            svg.select('#wrapper .x.axis').call(xaxis);
+            svg.select('#wrapper .y.axis').call(yaxis);
 
             var high = svg.select('#wrapper').selectAll('path.high')
                 .data(function(d) { return [d]; });
@@ -86,7 +87,7 @@ path.low {
             high
                 .attr('d', d3.svg.line()
                   .x(function(d, i) { return xscale(i); })
-                  .y(function(d, i) { console.log(d, i); return yscale(d.hi); }))
+                  .y(function(d, i) { return yscale(d.hi); }))
 
             var low = svg.select('#wrapper').selectAll('path.low')
                 .data(function(d) { return [d]; });
@@ -115,7 +116,6 @@ path.low {
         var pkt = { last : null, data : [] },
             byt = { last : null, data : [] };
 
-        
         function update(latest) {
             var pkt_latest = { hi: (latest.HIGH ? latest.HIGH[0] : 0), lo : (latest.LOW?latest.LOW[0]:0)  },
                 byt_latest = { hi: (latest.HIGH ? latest.HIGH[1] : 0), lo : (latest.LOW?latest.LOW[1]:0)};
@@ -137,7 +137,7 @@ path.low {
             }
         }
 
-        d3.select('body').datum([pkt.data, byt.data]).call(chart);
+        d3.select('body').datum(byt.data).call(chart);
 
         var interval = setInterval(function() {
           d3.json('/flowcounters', function(data) {
