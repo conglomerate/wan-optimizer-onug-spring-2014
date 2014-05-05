@@ -120,8 +120,8 @@ path.low {
             if (pkt.last === null) {
                 pkt.last = pkt_latest;
             } else {
-                console.log(pkt_latest, pkt.last);
                 pkt.data.push({ hi : pkt_latest.hi - pkt.last.hi, lo : pkt_latest.lo - pkt.last.lo });
+                if (pkt.data.length > 10) { pkt.data.shift(); }
                 pkt.last = pkt_latest;
             }
 
@@ -129,6 +129,7 @@ path.low {
                 byt.last = byt_latest
             } else {
                 byt.data.push({ hi : byt_latest.hi - byt.last.hi, lo : byt_latest.lo - byt.last.lo });
+                if (byt.data.length > 10) { byt.data.shift(); }
                 byt.last = byt_latest;
             }
         }
