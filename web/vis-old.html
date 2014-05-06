@@ -50,6 +50,11 @@ button {
     height: 30px;
 }
 
+textarea {
+    width: 40%;
+    height: 60px;
+}
+
 #legend {
     float: left;
     width: 40%;
@@ -58,56 +63,7 @@ button {
 </head>
 
 <body>
-<div class="container">
 <h1>Throughput at Branch 1</h1>
-
-<div class="row">
-  <div class="col-md-7 graph"></div>
-  <div class="col-md-5">
-      <table id="legend">
-          <tr>
-              <td style="background-color:gray">&nbsp;</td>
-              <td>total throughput</td>
-          </tr>
-          <tr>
-              <td style="background-color:red">&nbsp;</td>
-              <td>high quality throughput</td>
-          </tr>
-          <tr>
-              <td style="background-color:blue">&nbsp;</td>
-              <td>low quality throughput</td>
-          </tr>
-      </table>
-  </div>
-</div>
-
-
-
-<h1>Application Policies</h1>
-  <div class="row group">
-  <div class="col-md-1">Policy 1</div>
-  <div class="col-md-4">
-    <pre>* ==> HIGH</pre>
-  </div>
-  <div class="col-md-3">
-    <button id="clear" class="btn btn-default">apply default policies</button>
-  </div>
-  </div>
-  <div class="row group">
-  <div class="col-md-1">Policy 2</div>    
-  <div class="col-md-4">
-    <pre>
-www.youtube.com ==> LOW,
-              * ==> HIGH
-</pre>
-  </div>
-  <div class="col-md-3">
-    <button id="set" class="btn btn-default">apply policies</button>
-  </div>
-  </div>
-</div>
-
-
     <script>
         var margin = { 'top' : 20, 'bottom' : 20, 'right' : 20, 'left' : 80 },
             height = 300,
@@ -207,18 +163,48 @@ www.youtube.com ==> LOW,
             }
         }
 
-        d3.select('.graph').datum(byt.data).call(chart);
+        d3.select('body').datum(byt.data).call(chart);
 
         var interval = setInterval(function() {
           d3.json('/flowcounters', function(data) {
             update(data);
 JSON.stringify(byt.data);
-            d3.select('.graph').datum(byt.data).call(chart);
+            d3.select('body').datum(byt.data).call(chart);
           })
         }, 2000);
+    </script>
+      <table id="legend">
+          <tr>
+              <td style="background-color:gray">&nbsp;</td>
+              <td>total throughput</td>
+          </tr>
+          <tr>
+              <td style="background-color:red">&nbsp;</td>
+              <td>high quality throughput</td>
+          </tr>
+          <tr>
+              <td style="background-color:blue">&nbsp;</td>
+              <td>low quality throughput</td>
+          </tr>
+      </table>
 
+  <h1>Application Policies</h1>
+    <div class="group">
+      
+      <textarea rows="1">* ==> HIGH</textarea>
+      <div>
+          <button id="clear">default app policies</button>
+      </div>
+      
+      <textarea rows="1">www.youtube.com ==> LOW,www.reddit.com  ==> HIGH</textarea>
+      <div>
+          <button id="set">add app policy</button>
+      </div>
+
+    </div>
+
+    <script>
         d3.select('.group button#set').on('click', function() {
-
             var data = JSON.stringify({ "component": "policy", "method": "write", "value":[{"trafficType":{"asserts":[{"field":"IP_DST","arg1":-1062731771,"arg2":32}]},"quality":0}] });
             d3.xhr('/db')
                 .header("Content-Type", "application/json")
@@ -226,12 +212,10 @@ JSON.stringify(byt.data);
         });
 
         d3.select('.group button#clear').on('click', function() {
-
             var data = JSON.stringify({ "component": "policy", "method": "write", "value":[] });
             d3.xhr('/db')
                 .header("Content-Type", "application/json")
                 .post(data, function(error, data) { });
         });
     </script>
-
 </body>
