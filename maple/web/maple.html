@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mapleApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Maple</title>
+
+        <link rel="stylesheet" href="/maple/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/maple/leaf/css/topology.css">
+        <link rel="stylesheet" href="/maple/leaf/css/network.css">
+        <link rel="stylesheet" href="/maple/leaf/css/base.css">
+
+        <script type="text/javascript" src="/maple/d3/d3.v3.js"></script>
+        <script type="text/javascript" src="d3/d3-tip.js"></script>
+        <script type="text/javascript" src="/maple/leaf/js/jquery-1.10.2.js"></script>
+        <script src="/maple/leaf/js/angular.js"></script>
+        <script src="/maple/leaf/js/angular-route.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+        <script src="leaf/js/buckets.js"></script>
+        <script src="/maple/leaf/js/lodash.js"></script>
+        <script src="chroma/chroma.js"></script>
+        <script type="text/javascript" src="/maple/leaf/js/ui-bootstrap-tpls-0.9.0.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script src="/maple/cubism/cubism.v1.js"></script>
+        <script type="text/javascript" src="/maple/bootstrap/js/bootstrap.js"></script>
+
+
+        <script type="text/javascript" src="/maple/leaf/js/sortable.js"></script>
+
+
+        <link href="/maple/angular-xeditable-0.1.8/css/xeditable.css" rel="stylesheet">
+        <script src="/maple/angular-xeditable-0.1.8/js/xeditable.js"></script>
+
+        <script src="/maple/leaf/js/libleaf.js"></script>
+        <script src="/maple/leaf/js/maple.js"></script>
+        <script src="/maple/leaf/js/network.js"></script>
+        <script src="/maple/leaf/js/topology.js"></script>
+        <script src="/maple/leaf/js/taps.js"></script>
+        <script src="/maple/leaf/js/badhosts.js"></script>
+        <script src="/maple/leaf/js/acl.js"></script>
+        <script src="/maple/leaf/js/monitor.js"></script> 
+    </head>
+    <body>
+
+
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav"
+  role="banner" ng-controller="HeaderCtrl">
+<div class="container">
+<div class="navbar-header">
+  <button class="navbar-toggle" type="button" data-toggle="collapse"
+  data-target=".bs-navbar-collapse">
+  <span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="">
+  <span class="glyphicon glyphicon-leaf glyphicon-white"> Maple</span>
+</a>
+</div>
+<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+<ul class="nav navbar-nav">
+  <li ng-class="{ active: isActive('/topology')}"><a href="#/topology">Topology</a></li>
+  <li id="usageNavItem" ng-class="{ active: isActive('/usage')}"><a href="#/usage">Usage</a></li>
+  <li id="inventoryNavItem" class="dropdown"
+  ng-class=
+  "{ active: isActive('/ports') || isActive('/fib') || isActive('/hostLocs')|| isActive('/links')}">
+  <a class="dropdown-toggle" data-toggle="dropdown">
+    Inventory <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#/ports">Ports</a></li>
+    <li><a href="#/hostLocs">Host Locations</a></li>
+    <li><a href="#/links">Links</a></li>
+    <li><a href="#/fib">Forwarding Tables</a></li>
+  </ul>
+  </li>
+  <li><a href="maple.html#/acl">Access Control</a></li>
+  <li><a href="maple.html#/monitor">Traffic Monitoring</a></li>  
+</ul>
+</nav>
+</div>
+</header>
+
+<div ng-view></div>
+
+</body>
+</html> 

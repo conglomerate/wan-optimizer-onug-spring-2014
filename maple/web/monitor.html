@@ -1,0 +1,76 @@
+<div id="container" class="container">
+
+<h1>Traffic Monitoring</h1>
+  
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  
+
+<table id="monitorTable2" class="table table-hover">
+<thead>
+  <tr>
+    <th>IP Source</th>
+    <th>IP Dest</th>
+    <th>Protocol</th>
+    <th>Source Ports</th>
+    <th>Dest Ports</th>
+    <th>Tap Destinations</th>            
+    <th>
+
+    </th>
+  </tr>
+</thead>
+<tbody ui:sortable ui-sortable="sortableOptions" ng:model="monitors" style="cursor: move;">
+    <tr ng-repeat="acrule in monitors">
+        <td>
+	  <span editable-text="acrule.ipSourcePrefix" e-name="ipSourcePrefix_" e-form="rowform" e-required>
+          {{ acrule.ipSourcePrefix || '0.0.0.0/0' }}
+	  </span>
+	</td>
+        <td>
+	  <span editable-text="acrule.ipDestPrefix" e-name="ipDestPrefix_" e-form="rowform" e-required>
+          {{ acrule.ipDestPrefix || '0.0.0.0/0' }}
+	  </span>
+	</td>	
+        <td>
+	  <span editable-select="acrule.predicate.protocol" e-name="protocol_" e-form="rowform" e-ng-options="protocol for protocol in protocols" e-required>
+          {{ acrule.predicate.protocol || '' }}
+	  </span>
+	</td>
+        <td>
+	  <span editable-text="acrule.srcPortRange" e-name="srcPortRange_" e-form="rowform" e-required>
+          {{ acrule.srcPortRange || '[0,65536]' }}
+	  </span>
+	</td>
+        <td>
+	  <span editable-text="acrule.dstPortRange" e-name="dstPortRange_" e-form="rowform" e-required>
+          {{ acrule.dstPortRange || '[0,65536]' }}
+	  </span>
+	</td>
+        <td>
+	  <span editable-text="acrule.destinationsString" e-name="destination_"  e-form="rowform" e-required>
+          {{ acrule.destinationsString || '' }}
+	  </span>
+	</td>
+	<td style="white-space: nowrap">
+	  <!-- form -->
+	  <form editable-form name="rowform" onbeforesave="saveRow($data, $index)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == acrule">
+	  <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+	  save
+	  </button>
+	  <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+	  cancel
+	  </button>
+	  </form>
+	<div class="buttons" ng-show="!rowform.$visible">
+	  <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+	  <button class="btn btn-danger" ng-click="deleteRule(acrule)">del</button>
+	</div>  
+	</td>
+    </tr>
+</tbody>
+</table>
+<button class="btn btn-default" ng-click="addRow()">Add Rule</button>
+
+</div> <!-- container -->
+
+

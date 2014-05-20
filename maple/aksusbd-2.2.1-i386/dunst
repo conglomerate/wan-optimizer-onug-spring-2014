@@ -1,0 +1,96 @@
+#!/bin/bash
+#$Id: dunst,v 1.20 2010-07-06 10:13:45 andrea.mazzoleni Exp $
+#
+# Uninstall script for HASP SRM runtime environment
+#
+# return codes:
+#   0 - success
+#   1 - missing permissions (must be run as root)
+#   4 - unrecognized system
+#   6 - aksusbd RPM already installed
+
+# check for root user
+if [ `id -u` -ne 0 ]; then
+    echo "Installer must be run as root" 1>&2
+    echo "Aborting..." 1>&2
+    exit 1
+fi
+
+# check for Linux
+if [ `uname -s` != "Linux" ]; then
+    echo "Not running on Linux!" 1>&2
+    echo "Aborting..." 1>&2
+    exit 4
+fi
+
+# destination directory
+dest_dir=/usr/sbin
+
+# script directory
+if [ -d /etc/init.d ]; then
+    # System V style
+    script_dir=/etc/init.d
+elif [ -d /etc/rc.d ]; then
+    # BSD style
+    script_dir=/etc/rc.d
+else
+    echo "Unsupported init script system!" 1>&2
+    echo "Aborting..." 1>&2
+    exit 4
+fi
+
+# startup directory
+if [ -d /etc/rc.d ]; then
+    startup_dir=/etc/rc.d
+else
+    startup_dir=/etc
+fi
+
+# check if an RPM is already installed
+rpm --help > /dev/null 2>&1
+if [ $? -ne 127 ]
+then
+    rpm_name=`rpm -qa 2>/dev/null | grep ^aksusbd | head -1`
+    if [ ! -z "$rpm_name" ]
+    then
+        echo "The $rpm_name RPM is installed on this system." 1>&2
+        echo "To uninstall it run as root: rpm -e aksusbd"  1>&2
+        echo "Aborting..." 1>&2
+        exit 6
+    fi
+fi
+
+# check if a DEB is already installed
+dpkg --help > /dev/null 2>&1
+if [ $? -ne 127 ]
+then
+    dpkg -l aksusbd | grep "^ii" > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        echo "The aksusbd DEB is installed on this system." 1>&2
+        echo "To uninstall it run as root: dpkg -r aksusbd"  1>&2
+        echo "Aborting..." 1>&2
+        exit 6
+    fi
+fi
+
+# if not installed, it may be missing
+if [ -e $script_dir/aksusbd ]; then
+    echo "Stopping HASP SRM RTE ..."
+    sh $script_dir/aksusbd stop
+fi
+
+echo "Removing files ..."
+
+rm -f $dest_dir/aksusbd
+rm -f $dest_dir/winehasp
+rm -f $dest_dir/hasplmd
+rm -f /etc/udev/rules.d/80-hasp.rules
+rm -f $script_dir/aksusbd
+rm -f $startup_dir/rc2.d/S23aksusbd
+rm -f $startup_dir/rc3.d/S23aksusbd
+rm -f $startup_dir/rc4.d/S23aksusbd
+rm -f $startup_dir/rc5.d/S23aksusbd
+
+echo "Done"
+

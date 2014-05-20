@@ -1,0 +1,195 @@
+#!/bin/sh
+# chkconfig: 2345 27 73
+# description: Sentinel LDK RTE
+
+### BEGIN INIT INFO
+# Provides: aksusbd
+# Required-Start: 
+# Required-Stop: 
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: Sentinel LDK RTE
+### END INIT INFO
+
+if [ `id -u` -ne 0 ]
+then
+    echo "$0 must be run as root"
+    exit 1
+fi
+
+# daemon files
+HASP_USB_FILE=/usr/sbin/aksusbd
+HASP_WINE_FILE=/usr/sbin/winehasp
+HASP_LM_FILE=/usr/sbin/hasplmd
+
+# if daemons are missing, exit now
+[ -f $HASP_USB_FILE ] || exit 0
+[ -f $HASP_LM_FILE ] || exit 0
+
+# check OS type
+if [ -e /etc/rc.d/init.d/functions ]; then
+    HASP_OS="RedHat"
+elif [ -e /etc/rc.status ]; then
+    HASP_OS="SUSE"
+elif [ -e /etc/debian_version ]; then
+    # Debian uses start-stop-daemon instead of the LSB functions, 
+    # because the Debian implementation of killproc() doesn't wait and kill a staging process
+    HASP_OS="Debian"
+else
+    HASP_OS="Unknown"
+fi
+
+# LSB compliant script. See http://refspecs.freestandards.org/LSB_3.1.1/LSB-Core-generic/LSB-Core-generic/iniscrptfunc.html
+# For an LSB compliant script uncomment the following:
+# HASP_OS="LSB"
+
+case $HASP_OS in
+SUSE)
+    . /etc/rc.status
+    rc_reset
+    ;;
+LSB)
+    . /lib/lsb/init-functions
+    ;;
+RedHat)
+    . /etc/rc.d/init.d/functions
+    ;;
+esac
+
+
+hasp_start_daemon()
+{
+    echo -n "Starting $2 daemon: "
+       
+    case $HASP_OS in
+    SUSE)
+        startproc $1 $3
+        rc_status -v
+        ;;
+    Debian)
+        start-stop-daemon --start --quiet --exec $1 -- $3
+        echo "."
+        ;;
+    LSB)
+        start_daemon $1 $3
+        echo "."
+        ;;
+    RedHat)
+        daemon $1 $3
+        echo
+        ;;
+    *)
+        pgrep -f $1 >/dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            $1 $3
+        fi
+        echo "."
+        ;;
+    esac
+}
+
+hasp_stop_daemon()
+{
+    echo -n "Stopping $2 daemon: "
+        
+    case $HASP_OS in
+    SUSE)
+        killproc $1
+        rc_status -v
+        ;;
+    Debian)
+        start-stop-daemon --stop --quiet --retry 8 --exec $1
+        echo "."
+        ;;
+    LSB)
+        killproc $1
+        echo "."
+        ;;
+    RedHat)
+        killproc $1
+        echo
+        ;;
+    *)
+        pgrep -f $1 >/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            pkill -f $1 >/dev/null 2>&1
+            for SECONDS in 1 2 3 4 5 6 7 8 ; do
+                pgrep -f $1 >/dev/null 2>&1
+                if [ $? -ne 0 ]; then
+                    break
+                fi
+                sleep 1
+            done
+            pgrep -f $1 >/dev/null 2>&1
+            if [ $? -eq 0 ]; then
+                pkill -9 -f $1 >/dev/null 2>&1
+                sleep 1
+            fi
+        fi
+        echo "."
+        ;;
+    esac
+}
+
+hasp_status_daemon()
+{
+    pgrep -f $1 > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        echo "$2 is running."
+    else
+        echo "$2 is NOT running!"
+    fi
+}
+
+start()
+{
+    hasp_start_daemon $HASP_USB_FILE "AKSUSB" ""
+    hasp_start_daemon $HASP_WINE_FILE "WINEHASP" ""
+    hasp_start_daemon $HASP_LM_FILE "HASPLM" "-s"
+}
+
+stop()
+{
+    hasp_stop_daemon $HASP_LM_FILE "HASPLM"
+    hasp_stop_daemon $HASP_WINE_FILE "WINEHASP"
+    hasp_stop_daemon $HASP_USB_FILE "AKSUSB"
+}
+
+status()
+{
+    hasp_status_daemon $HASP_USB_FILE "AKSUSB"
+    hasp_status_daemon $HASP_WINE_FILE "WINEHASP"
+    hasp_status_daemon $HASP_LM_FILE "HASPLM"
+}
+
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    force-reload|restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|force-reload|status}"
+        exit 1
+        ;;
+esac
+
+case $HASP_OS in
+    SUSE)
+        rc_exit
+        ;;
+    RedHat)
+        exit $?
+        ;;
+esac
+

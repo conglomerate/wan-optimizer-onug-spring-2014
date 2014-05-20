@@ -1,0 +1,34 @@
+<div class="container">
+
+<h1>Switch Ports <span class="badge">{{switchPorts.length}}</span></h1>
+<table id="switchPortsTable" class="table table-striped table-condensed">
+<thead>
+  <tr>
+    <th>Switch</th>
+    <th>Port</th>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Status</th>
+    <th>Config</th>
+    <th>tx (kb/s)</th>
+    <th>rx (kb/s)</th>
+    <th>Utilization</th>
+  </tr>
+</thead>
+<tbody>
+<tr ng-repeat="sp in switchPorts | orderBy:['switch','port'] ">
+    <td>{{sp.switch}}</td>
+    <td>{{sp.port}}</td>
+    <td>{{sp.portName}}</td>
+    <td>{{sp.portAddress}}</td>
+    <td>{{sp.portStatus}}</td>    
+    <td>{{sp.portConfig}}</td>
+    <td>{{sp.txkbps.toFixed(2)}}</td>
+    <td>{{sp.rxkbps.toFixed(2)}}</td>
+    <td>{{sp.portUtil.toFixed(2)}}</td>        
+</tr>
+</tbody>
+</table>
+
+  
+</div>
