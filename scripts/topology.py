@@ -6,10 +6,11 @@ import sys
 from mininet.log import lg, info, error, debug, output
 from mininet.util import quietRun
 from mininet.node import  Host, OVSSwitch, RemoteController
+from mininet.link import Link, TCIntf
 from mininet.cli import CLI
 from mininet.net import Mininet
 
-def start(ip="127.0.0.1",port=6633):
+def start(ip="192.168.56.1",port=6633):
     cmap = None
 
     class MultiSwitch(OVSSwitch):
@@ -18,19 +19,23 @@ def start(ip="127.0.0.1",port=6633):
             return OVSSwitch.start(self, cmap.get(self.name, []))
 
     ctrlr_0 = lambda n: RemoteController(n, defaultIP='192.168.0.1', port=port, inNamespace=False)
-    ctrlr_1 = lambda n: RemoteController(n, defaultIP=ip, port=port, inNamespace=False)
+    ctrlr_1 = lambda n: RemoteController(n, ip=ip, port=port, inNamespace=False)
+    ctrlr_2 = lambda n: RemoteController(n, ip=ip, port=port+1, inNamespace=False)
+    ctrlr_3 = lambda n: RemoteController(n, ip=ip, port=port+2, inNamespace=False)
     net = Mininet(switch=MultiSwitch)
     c0 = net.addController('c0', controller=ctrlr_0)
     c1 = net.addController('c1', controller=ctrlr_1)
+    c2 = net.addController('c2', controller=ctrlr_2)
+    c3 = net.addController('c3', controller=ctrlr_3)
 
     cmap = {
         's1' : [c1],
-        's3' : [c1],
-        's5' : [c1],
+        's3' : [c2],
+        's5' : [c3],
     }
 
-    HQ_CONFIG = { 'bw' : 10 }
-    LQ_CONFIG = { 'bw' : 1  }
+    HQ_CONFIG = { 'bw' : 2 }
+    LQ_CONFIG = { 'bw' : 10  }
 
     ####### End of static Mininet prologue ######
 
@@ -75,11 +80,11 @@ def start(ip="127.0.0.1",port=6633):
     net.addLink(h8, s3, 0, 5)
     net.addLink(s3, pe3, 1, 1)
 
-    net.addLink(pe1, pe3, 2, 2)
-    net.addLink(pe1, pe3, 3, 3)
+    net.addLink(pe1, pe3, 2, 2, intf=TCIntf, params1=HQ_CONFIG, params2=HQ_CONFIG)
+    net.addLink(pe1, pe3, 3, 3, intf=TCIntf, params1=LQ_CONFIG, params2=LQ_CONFIG)
 
-    net.addLink(pe2, pe3, 2, 4)
-    net.addLink(pe2, pe3, 3, 5)
+    net.addLink(pe2, pe3, 2, 4, intf=TCIntf, params1=HQ_CONFIG, params2=HQ_CONFIG)
+    net.addLink(pe2, pe3, 3, 5, intf=TCIntf, params1=LQ_CONFIG, params2=LQ_CONFIG)
 
     ###### Start of static Mininet epilogue ######
     # Set up logging etc.

@@ -4,10 +4,10 @@ ovs-ofctl add-flow $1 "priority=5, in_port=1,dl_dst=ff:ff:ff:ff:ff:ff action=out
 ovs-ofctl add-flow $1 "priority=5, in_port=2,dl_dst=ff:ff:ff:ff:ff:ff action=output:1,output:4"
 ovs-ofctl add-flow $1 "priority=5, in_port=4,dl_dst=ff:ff:ff:ff:ff:ff action=output:1,output:2"
 
-ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,ip_dscp=1,dl_dst=00:00:00:00:00:01 action=output:2"
-ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,ip_dscp=1,dl_dst=00:00:00:00:00:02 action=output:2"
-ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,ip_dscp=1,dl_dst=00:00:00:00:00:03 action=output:4"
-ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,ip_dscp=1,dl_dst=00:00:00:00:00:04 action=output:4"
+ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,nw_tos=4,dl_dst=00:00:00:00:00:01 action=output:2"
+ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,nw_tos=4,dl_dst=00:00:00:00:00:02 action=output:2"
+ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,nw_tos=4,dl_dst=00:00:00:00:00:03 action=output:4"
+ovs-ofctl add-flow $1 "priority=4, dl_type=0x800,nw_tos=4,dl_dst=00:00:00:00:00:04 action=output:4"
 
 ovs-ofctl add-flow $1 "priority=3,                         dl_dst=00:00:00:00:00:01 action=output:3"
 ovs-ofctl add-flow $1 "priority=3,                         dl_dst=00:00:00:00:00:02 action=output:3"

@@ -1,0 +1,4 @@
+#!/bin/sh
+./pe_datacenter_router s6
+./pe_site_router s2
+./pe_site_router s4

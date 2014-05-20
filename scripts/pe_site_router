@@ -3,7 +3,7 @@
 ovs-ofctl add-flow $1 "priority=2, in_port=1,dl_dst=ff:ff:ff:ff:ff:ff action=output:2"
 ovs-ofctl add-flow $1 "priority=2, in_port=2,dl_dst=ff:ff:ff:ff:ff:ff action=output:1"
 
-ovs-ofctl add-flow $1 "priority=2, in_port=1,dl_type=0x800,ip_dscp=1 action=output:2"
+ovs-ofctl add-flow $1 "priority=2, in_port=1,dl_type=0x800,nw_tos=4 action=output:2"
 ovs-ofctl add-flow $1 "priority=1, in_port=1                         action=output:3"
 
 ovs-ofctl add-flow $1 "priority=0, action=output:1"
