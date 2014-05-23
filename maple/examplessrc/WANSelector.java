@@ -1,17 +1,5 @@
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import maple.core.Assertion;
-import maple.core.Counter;
-import maple.core.IPv4;
-import maple.core.MapleFunction;
-import maple.core.MapleMap;
-import maple.core.Mod;
-import maple.core.Packet;
-import maple.core.Route;
-import maple.core.SwitchPort;
-import maple.core.Variable;
+import java.util.*;
+import maple.core.*;
 
 public class WANSelector extends MapleFunction {
 	
@@ -64,7 +52,6 @@ public class WANSelector extends MapleFunction {
 
 	
 	private void monitorFlows(Packet p) {
-          return; /*
 		if (p.satisfies(
 				Assertion.ipSrcIn(IPv4.toIPv4Address("192.168.0.1"), 32),
 				Assertion.ipDstIn(IPv4.toIPv4Address("192.168.0.5"), 32),
@@ -76,7 +63,7 @@ public class WANSelector extends MapleFunction {
 				Assertion.ipDstIn(IPv4.toIPv4Address("192.168.0.6"), 32),
 				Assertion.tcpDstEquals(5001))) {
 			iperf2Counter.count();
-                        } */
+                } 
 	}
 
 	private int desiredQuality(Packet p) {
