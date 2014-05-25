@@ -41,11 +41,33 @@ Therefore, our goal is to place app traffic on the lowest cost connections
 satisfying their QoS requirements (whenever possible). We estimate that up to
 70% of an enterprise's WAN data usage may be best effort traffic. The cost
 savings from purchasing cheaper links may therefore be substantial when scaled
-to enterprises with many branch locations.
+to enterprises with many branch locations. In addition, we aim to provide a
+simple management interface that provides central configuration and transparent
+policy distribution.
 
 Challenges
 --
-Here we describe the setup of branch sites/data center, MPLS routers and WAN links, etc. 
+
+In order to route traffic appropriately, the WAN system must have a method to
+identify different applications and to determine the QoS requirements for each
+application. L2-L4 classification of flows will be tedious for the
+administrator, since many web services use a variety of dynamically-changing IP
+addresses. Maintaining this configuration over hundreds of sites adds a
+substantial burden for network administrators.
+
+The second challenge is to dynamically sense link quality and automatically
+re-route WAN traffic based on real-time conditions. Automation is crucial, since
+manual administration of routing policy at hundreds of branch offices is
+infeasible.
+
+The third challenge is to integrate the new SDN WAN functionality into the
+existing branch and data center networks. For concreteness, we used an example
+enterprise network to ensure realism. In this network, an MPLS router in each
+branch and in the data center terminate each of the WAN connections. The
+enterprise network imposes a constraint that these MPLS routers may not be
+replaced by SDN switches.
+
+
 
 Network Simulation
 ==================
