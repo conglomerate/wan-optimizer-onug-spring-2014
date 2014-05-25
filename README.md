@@ -31,21 +31,16 @@ To keep things simple, many organizations will send all traffic over the high
 quality link, as long as it is operational, and use the best effort link only as
 failover (i.e. when the high quality fails). This ensures that all apps get the
 quality that they need (or as close to their need as we can get in the case of
-link failure). On the other hand, this simple solution wastes money: many apps don't need high
-quality (e.g. downloading Apple updates) and could be place on the best-effort
-link. In addition, the best-effort link may often have good enough quality
-(e.g. sufficient bandwidth) so that apps with specific requirements can be
-placed on the best-effort link.
+link failure). On the other hand, this simple solution wastes money: many apps
+don't need high quality (e.g. downloading Apple updates) and could be place on
+the best-effort link. In addition, the best-effort link may often have good
+enough quality (e.g. sufficient bandwidth) to satisfy many apps' QoS
+requirements.
 
-Optimizing
-We estimate that up to 70% of data usage could
-
-
-
-To improve on this, we aim to solve the following problem: whenever possible, we
-want to give each application the connectivity with a quality that satisfies its
-requirements, while also minimizing cost and sharing resources fairly.
-
+Therefore, our goal is to place app traffic on the lowest cost connections satisfying
+their QoS requirements. We estimate that up to 70% of an enterprise's WAN data
+usage may be best effort traffic. The cost savings from purchasing cheaper links
+may therefore be substantial when scaled to enterprises with many branch locations.
 
 Here we describe the setup of branch sites/data center, MPLS routers and WAN links, etc. 
 
