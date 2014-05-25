@@ -61,11 +61,11 @@ manual administration of routing policy at hundreds of branch offices is
 infeasible.
 
 The third challenge is to integrate the new SDN WAN functionality into the
-existing branch and data center networks. For concreteness, we used an example
-enterprise network to ensure realism. In this network, an MPLS router in each
-branch and in the data center terminate each of the WAN connections. The
-enterprise network imposes a constraint that these MPLS routers may not be
-replaced by SDN switches.
+existing branch and data center networks. To ensure realism, we gathered
+requirements and constraints from a real enterprise network. In this network, an
+MPLS router in each branch and in the data center terminate each of the WAN
+connections. The enterprise network imposes a constraint that these MPLS routers
+may not be replaced by SDN switches.
 
 
 
