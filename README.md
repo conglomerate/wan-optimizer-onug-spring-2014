@@ -1,11 +1,21 @@
-maple-onug-spring-2014
+WAN Optimizer from ONUG Spring 2014 Hackathon
 ======================
 
 This repository contains the proof-of-concept WAN optimizer application developed at the Spring 2014 ONUG Hackathon. 
 
 
-Architecture
+Problem and Architecture
 ============
+
+We consider the setting of an enterprise with a single data center and many
+branch offices.  Users in the branch office run applications with components
+(i.e. servers) hosted in the data center. These may be voice or desktop
+virtualization applications that have QoS requirements to function well.
+
+Each branch office has one or more WAN links used to connect it to the corporate data
+center. These WAN links vary in quality: there are some links that ensure
+stringent QoS (SLA) parameters and are costly (in terms of bandwidth/cost) while
+other links may be best effort connections with relatively low cost.
 
 Here we describe the setup of branch sites/data center, MPLS routers and WAN links, etc. 
 
