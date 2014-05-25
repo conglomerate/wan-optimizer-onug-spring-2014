@@ -1,7 +1,8 @@
 WAN Optimizer from ONUG Spring 2014 Hackathon
 ======================
 
-This repository contains the proof-of-concept WAN optimizer application developed at the Spring 2014 ONUG Hackathon. 
+This repository contains the proof-of-concept WAN optimizer application
+developed at the [Spring 2014 ONUG Hackathon](http://opennetworkingusergroup.com/agenda/hackathon/). 
 
 
 Problem and Architecture
