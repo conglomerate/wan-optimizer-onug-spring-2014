@@ -16,7 +16,25 @@ virtualization applications that have QoS requirements to function well.
 Each branch office has one or more WAN links used to connect it to the corporate data
 center. These WAN links vary in quality: there are some links that ensure
 stringent QoS (SLA) parameters and are costly (in terms of bandwidth/cost) while
-other links may be best effort connections with relatively low cost.
+other links may be best effort connections with relatively low cost. For
+simplicity, here we limit the scope to consider exactly two WAN links from each
+branch office to the corporate data center. One is an expensive, high quality
+link, and the other is an inexpensive, low quality link.
+
+To keep things simple, many organizations will send all traffic over the high
+quality link, as long as it is operational, and use the best effort link only as
+failover (i.e. when the high quality fails). This ensures that all apps get the
+quality that they need (or as close to their need as we can get in the case of
+link failure). On the other hand, it wastes money: many apps don't need high
+quality (e.g. downloading Apple updates) and could be place on the best-effort
+link. Secondly, the best-effort link may often have good enough quality
+(e.g. sufficient bandwidth) so that apps with specific requirements can be
+placed on the best-effort link.
+
+To improve on this, we aim to solve the following problem: whenever possible, we
+want to give each application the connectivity with a quality that satisfies its
+requirements, while also minimizing cost and sharing resources fairly.
+
 
 Here we describe the setup of branch sites/data center, MPLS routers and WAN links, etc. 
 
