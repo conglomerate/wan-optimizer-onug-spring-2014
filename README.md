@@ -19,13 +19,13 @@ branch offices.  Users in the branch office run applications with components
 (i.e. servers) hosted in the data center. These may be voice or desktop
 virtualization applications that have QoS requirements to function well.
 
-Each branch office has one or more WAN links used to connect it to the corporate data
-center. These WAN links vary in quality: there are some links that ensure
-stringent QoS (SLA) parameters and are costly (in terms of bandwidth/cost) while
-other links may be best effort connections with relatively low cost. For
-simplicity, here we limit the scope to consider exactly two WAN links from each
-branch office to the corporate data center. One is an expensive, high quality
-link, and the other is an inexpensive, low quality link.
+Each branch office has one or more WAN links connecting it to the corporate data
+center. These WAN links vary in quality: some links satisfy stringent QoS (SLA)
+parameters and are costly (in terms of bandwidth/cost) while other links are
+best effort connections with relatively low cost. For simplicity, in this
+project, we limit the scope to consider exactly two WAN links from each branch
+office to the corporate data center. One is an expensive, high quality link, and
+the other is an inexpensive, low quality link.
 
 To keep things simple, many organizations will send all traffic over the high
 quality link, as long as it is operational, and use the best effort link only as
