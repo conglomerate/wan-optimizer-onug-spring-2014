@@ -1,4 +1,4 @@
-Enterprise SDN-WAN from ONUG Spring 2014 Hackathon
+Enterprise SDN-WAN App from ONUG Spring 2014 Hackathon
 ======================
 
 Team Conglomerate developed a proof-of-concept enterprise SDN-WAN application
@@ -17,7 +17,7 @@ The SDN-WAN Problem
 We consider the setting of an enterprise with a single data center and many
 branch offices.  Users in the branch office run applications with components
 (i.e. servers) hosted in the data center. These may be voice or desktop
-virtualization applications that have QoS requirements to function well.
+virtualization applications that have QoS requirements.
 
 Each branch office has one or more WAN links connecting it to the corporate data
 center. These WAN links vary in quality: some links satisfy stringent QoS (SLA)
@@ -29,21 +29,21 @@ the other is an inexpensive, low quality link.
 
 To keep things simple, many organizations will send all traffic over the high
 quality link, as long as it is operational, and use the best effort link only as
-failover (i.e. when the high quality fails). This ensures that all apps get the
-quality that they need (or as close to their need as we can get in the case of
-link failure). On the other hand, this simple solution wastes money: many apps
-don't need high quality (e.g. downloading Apple updates) and could be place on
-the best-effort link. In addition, the best-effort link may often have good
-enough quality (e.g. sufficient bandwidth) to satisfy many apps' QoS
+failover (i.e. when the high quality link fails). This ensures that all apps get
+the quality that they need (or as close as possible in the event of link
+failure). On the other hand, this simple solution is costly: many apps don't
+need high quality (e.g. downloading Apple updates) and could be placed on the
+less expensive, best-effort link. In addition, the best-effort link may often
+have good enough quality (e.g. sufficient bandwidth) to satisfy many apps' QoS
 requirements.
 
 Therefore, our goal is to place app traffic on the lowest cost connections
-satisfying their QoS requirements (whenever possible). We estimate that up to
-70% of an enterprise's WAN data usage may be best effort traffic. The cost
-savings from purchasing cheaper links may therefore be substantial when scaled
-to enterprises with many branch locations. In addition, we aim to provide a
-simple management interface that provides central configuration and transparent
-policy distribution.
+satisfying their QoS requirements (whenever possible) at any given time. We
+estimate that up to 70% of an enterprise's WAN data usage may be best effort
+traffic. The cost savings from using less expensive links may therefore be
+substantial when scaled to enterprises with many branch locations. In addition,
+we aim to provide a simple management interface that provides central
+configuration and transparent policy distribution.
 
 Challenges
 --
