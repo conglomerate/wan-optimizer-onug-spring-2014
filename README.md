@@ -65,9 +65,7 @@ existing branch and data center networks. To ensure realism, we gathered
 requirements and constraints from a real enterprise network. In this network, an
 MPLS router in each branch and in the data center terminate each of the WAN
 connections. The enterprise network imposes a constraint that these MPLS routers
-may not be replaced by SDN switches.
-
-
+may not be replaced by SDN switches.  See slide 2 in the [Hackathon presentation](../blob/master/docs/ONUG_hackathon_wan_opt_presentation.pdf) for a diagram showing the overall architecture of the branch and data center network with MPLS routers. 
 
 Network Simulation
 ==================
