@@ -11,7 +11,7 @@ The Conglomerate consists of David Crosbie, Spiros Eliopoulos, Ed Henry, Eric
 Murray, Andreas Voellmy and Eric Yspeert. This team includes a range of skills,
 including network & system admin and architecture and SDN programming.
 
-Problem and Architecture
+The SDN-WAN Problem
 ============
 
 We consider the setting of an enterprise with a single data center and many
@@ -37,13 +37,15 @@ the best-effort link. In addition, the best-effort link may often have good
 enough quality (e.g. sufficient bandwidth) to satisfy many apps' QoS
 requirements.
 
-Therefore, our goal is to place app traffic on the lowest cost connections satisfying
-their QoS requirements. We estimate that up to 70% of an enterprise's WAN data
-usage may be best effort traffic. The cost savings from purchasing cheaper links
-may therefore be substantial when scaled to enterprises with many branch locations.
+Therefore, our goal is to place app traffic on the lowest cost connections
+satisfying their QoS requirements (whenever possible). We estimate that up to
+70% of an enterprise's WAN data usage may be best effort traffic. The cost
+savings from purchasing cheaper links may therefore be substantial when scaled
+to enterprises with many branch locations.
 
+Challenges
+--
 Here we describe the setup of branch sites/data center, MPLS routers and WAN links, etc. 
-
 
 Network Simulation
 ==================
