@@ -67,6 +67,21 @@ MPLS router in each branch and in the data center terminate each of the WAN
 connections. The enterprise network imposes a constraint that these MPLS routers
 may not be replaced by SDN switches.  See slide 2 in the [Hackathon presentation](docs/ONUG_hackathon_wan_opt_presentation.pdf) for a diagram showing the overall architecture of the branch and data center network with MPLS routers. 
 
+Our Solution Design
+-
+
+We first configure a simple, static policy-based routing policy on the MPLS edge
+routers. This policy forwards packets from the SDN switch and leaving the site
+into the WAN links on the basis of the DSCP attribute of IP packets.
+
+We then replace the core switch (the switch just behind the edge MPLS router,
+providing fan out for the local network) in each branch and data center with an
+OpenFlow-enabled switch. In addition, we introduce one logical controller per
+site to actively control the SDN switch. The SDN system will control the WAN
+routing by placing flow rules that mark departing IP packets using the DSCP
+field of IP packets to control which link to use (i.e. the markings used in the
+static policy-based routing config on the edge routers).
+
 Network Simulation
 ==================
 
