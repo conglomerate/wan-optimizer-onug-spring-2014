@@ -1,9 +1,15 @@
-WAN Optimizer from ONUG Spring 2014 Hackathon
+Enterprise SDN-WAN from ONUG Spring 2014 Hackathon
 ======================
 
-This repository contains the proof-of-concept WAN optimizer application
-developed at the [Spring 2014 ONUG Hackathon](http://opennetworkingusergroup.com/agenda/hackathon/). 
+Team Conglomerate developed a proof-of-concept enterprise SDN-WAN application
+during the
+[Spring 2014 ONUG Hackathon](http://opennetworkingusergroup.com/agenda/hackathon/).
+This repository contains the proof-of-concept system developed during the
+hackathon along with our network simulation setup and demo scripts.
 
+The Conglomerate consists of David Crosbie, Spiros Eliopoulos, Ed Henry, Eric
+Murray, Andreas Voellmy and Eric Yspeert. This team includes a range of skills,
+including network & system admin and architecture and SDN programming.
 
 Problem and Architecture
 ============
@@ -25,11 +31,16 @@ To keep things simple, many organizations will send all traffic over the high
 quality link, as long as it is operational, and use the best effort link only as
 failover (i.e. when the high quality fails). This ensures that all apps get the
 quality that they need (or as close to their need as we can get in the case of
-link failure). On the other hand, it wastes money: many apps don't need high
+link failure). On the other hand, this simple solution wastes money: many apps don't need high
 quality (e.g. downloading Apple updates) and could be place on the best-effort
-link. Secondly, the best-effort link may often have good enough quality
+link. In addition, the best-effort link may often have good enough quality
 (e.g. sufficient bandwidth) so that apps with specific requirements can be
 placed on the best-effort link.
+
+Optimizing
+We estimate that up to 70% of data usage could
+
+
 
 To improve on this, we aim to solve the following problem: whenever possible, we
 want to give each application the connectivity with a quality that satisfies its
