@@ -91,7 +91,7 @@ routers. In addition, it enables incremental deployment where individual sites
 can be upgraded individually at any time.
 
 The system will have an easy-to-use web application that allows operators to set
-application policies. This system will push application policies to each site's
+application policies. The system will push application policies to each site's
 SDN controller.
 
 Applications will be identified by domain name, in addition to L2-L4
