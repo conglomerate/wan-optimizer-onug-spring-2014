@@ -43,7 +43,8 @@ estimate that up to 70% of an enterprise's WAN data usage may be best effort
 traffic. The cost savings from using less expensive links may therefore be
 substantial when scaled to enterprises with many branch locations. In addition,
 we aim to provide a simple management interface that provides central
-configuration and transparent policy distribution.
+configuration and transparent policy distribution. Finally, we aim to collect
+application statistics.
 
 Challenges
 --
@@ -65,14 +66,17 @@ existing branch and data center networks. To ensure realism, we gathered
 requirements and constraints from a real enterprise network. In this network, an
 MPLS router in each branch and in the data center terminate each of the WAN
 connections. The enterprise network imposes a constraint that these MPLS routers
-may not be replaced by SDN switches.  See slide 2 in the [Hackathon presentation](docs/ONUG_hackathon_wan_opt_presentation.pdf) for a diagram showing the overall architecture of the branch and data center network with MPLS routers. 
+may not be replaced by SDN switches.  See slide 2 in the
+[Hackathon presentation](docs/ONUG_hackathon_wan_opt_presentation.pdf) for a
+diagram showing the overall architecture of the branch and data center network
+with MPLS routers.
 
-Our Solution Design
+Our Solution
 -
 
 We first configure a simple, static policy-based routing policy on the MPLS edge
 routers. This policy forwards packets from the SDN switch and leaving the site
-into the WAN links on the basis of the DSCP attribute of IP packets.
+into the WAN links on the basis of the DSCP attribute of IP packets. 
 
 We then replace the core switch (the switch just behind the edge MPLS router,
 providing fan out for the local network) in each branch and data center with an
@@ -81,6 +85,19 @@ site to actively control the SDN switch. The SDN system will control the WAN
 routing by placing flow rules that mark departing IP packets using the DSCP
 field of IP packets to control which link to use (i.e. the markings used in the
 static policy-based routing config on the edge routers).
+
+This design allows the SDN WAN application to be deployed without replacing edge
+routers. In addition, it enables incremental deployment where individual sites
+can be upgraded individually at any time.
+
+The system will have an easy-to-use web application that allows operators to set
+application policies. This system will push application policies to each site's
+SDN controller.
+
+Applications will be identified by domain name, in addition to L2-L4
+attributes. Each SDN controller will dynamically maintain bindings between
+domain names and network addresses in order to apply policies. Flow rules in
+switches will be dynamically and automatically updated as bindings change.
 
 Network Simulation
 ==================
