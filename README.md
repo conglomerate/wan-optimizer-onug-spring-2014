@@ -100,11 +100,15 @@ switches will be dynamically and automatically updated as bindings change.
 
 The following sections describe how to run the proof-of-concept app and describes the key elements of the implementation. 
 
+### Preliminaries
+
+We use [vagrant]((http://www.vagrantup.com)) and [virtualbox](https://www.virtualbox.org) to setup two virtual machines: one to simulate the network and the other to run the site network controllers. You will need to install both of those tools on your system.  You will also need [git](http://git-scm.com).
+
 ### Network Simulation
 
 Here we describe how we use mininet (http://mininet.org) to emulate the environment, including instructions on how to start mininet, configure the MPLS routers, etc. 
 
-To simulate the network with Mininet, first install vagrant (http://www.vagrantup.com). Then grab the frenetic project which provides a vagrant project that we will use to run virtual network. To get frenetic, run the following commands:
+Grab the frenetic project which provides a vagrant project that we will use to run virtual network. To get frenetic, run the following commands:
 
 ```
 git clone https://github.com/frenetic-lang/frenetic
