@@ -106,12 +106,13 @@ We use [vagrant](http://www.vagrantup.com) and [virtualbox](https://www.virtualb
 
 ### Network Simulation
 
-We will use a [mininet](http://mininet.org) to simulate the network depicted in the slides. The network has one data center and two branch sites. Each branch site is connected to the data center over two connections: one is high quality and low bandwidth (2 Mbps) and the other is low quality and high bandwidth (10 Mbps). Each site has an edge "MPLS" router. Rather than run actual MPLS routers, we use ordinary OVS instances with appropriate static OpenFlow rules to simulate the behavior of the MPLS routers.
+We use [mininet](http://mininet.org) to simulate the network depicted in the slides. The network has one data center and two branch sites. Each branch site is connected to the data center over two connections: one is high quality and low bandwidth (2 Mbps) and the other is low quality and high bandwidth (10 Mbps). Each site has an edge "MPLS" router. Rather than run actual MPLS routers, we use ordinary OVS instances with appropriate static OpenFlow rules to simulate the behavior of the MPLS routers.
 
-Grab the frenetic project which provides a vagrant project that we will use to run virtual network. To get frenetic, run the following commands:
+We use the [Frenetic project's](http://www.frenetic-lang.org) Vagrant project to simulate the network. Run the following to setup the code:
 
 ```
 git clone https://github.com/frenetic-lang/frenetic
+cd frenetic
 git checkout 2da8b5b33f9ced6663358f280260f69a9ab04bcc
 ```
 
