@@ -108,15 +108,37 @@ We use [vagrant](http://www.vagrantup.com) and [virtualbox](https://www.virtualb
 
 We use [mininet](http://mininet.org) to simulate the network depicted in the slides. The network has one data center and two branch sites. Each branch site is connected to the data center over two connections: one is high quality and low bandwidth (2 Mbps) and the other is low quality and high bandwidth (10 Mbps). Each site has an edge "MPLS" router. Rather than run actual MPLS routers, we use ordinary OVS instances with appropriate static OpenFlow rules to simulate the behavior of the MPLS routers.
 
-We use the [Frenetic project's](http://www.frenetic-lang.org) Vagrant project to simulate the network. Run the following to setup the code:
+We use the [Frenetic project's](http://www.frenetic-lang.org) Vagrant project to simulate the network. Run the following to setup the project:
 
 ```
 git clone https://github.com/frenetic-lang/frenetic
 cd frenetic
 git checkout 2da8b5b33f9ced6663358f280260f69a9ab04bcc
+cp ../scripts/* vagrant/
 ```
 
-Then copy the scripts directory into frenetic/vagrant, cd into frenetic/vagrant, and run `vagrant up`. (EXPAND AND TEST THIS). When the machine is up, do `vagrant ssh` in two separate sessions, `cd /vagrant` in both. In one, do `sudo python topology.py`. This last command starts the network. Once it is up, run `sudo ./pe_setup_all` in the other terminal. Now the network is running, the "edge routers" are configured and the SDN network elements are each waiting to connect to a controller (each waiting for distinct controller).
+To start the VM (or provision it on the first time), run:
+
+```
+cd frenetic/vagrant
+vagrant up
+```
+
+When the machine is up, we can start the network. Log in to the machine (by running `vagrant ssh`), and then run
+
+```
+sudo python /vagrant/topology.py
+```
+
+Once the mininet prompt is up, open a second ssh session into the machine (i.e. run `vagrant ssh` in another shell on your host) and run:
+
+```
+sudo /vagrant/pe_setup_all
+```
+
+Now the network is running, the "edge routers" are configured and the SDN network elements are each waiting to connect to a controller (each waiting for distinct controller).
+
+Please see the scripts (`topology.py` and the `pe_*` scripts) for more details on the topology of the network and other details.
 
 ### Controllers
 
