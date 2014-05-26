@@ -102,7 +102,7 @@ The following sections describe how to run the proof-of-concept app and describe
 
 ### Preliminaries
 
-We use [vagrant]((http://www.vagrantup.com)) and [virtualbox](https://www.virtualbox.org) to setup two virtual machines: one to simulate the network and the other to run the site network controllers. You will need to install both of those tools on your system.  You will also need [git](http://git-scm.com).
+We use [vagrant](http://www.vagrantup.com) and [virtualbox](https://www.virtualbox.org) to setup two virtual machines: one to simulate the network and the other to run the site network controllers. You will need to install both of those tools on your system.  You will also need [git](http://git-scm.com).
 
 ### Network Simulation
 
