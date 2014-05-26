@@ -106,7 +106,7 @@ We use [vagrant](http://www.vagrantup.com) and [virtualbox](https://www.virtualb
 
 ### Network Simulation
 
-Here we describe how we use mininet (http://mininet.org) to emulate the environment, including instructions on how to start mininet, configure the MPLS routers, etc. 
+We will use a [mininet](http://mininet.org) to simulate the network depicted in the slides. The network has one data center and two branch sites. Each branch site is connected to the data center over two connections: one is high quality and low bandwidth (2 Mbps) and the other is low quality and high bandwidth (10 Mbps). Each site has an edge "MPLS" router. Rather than run actual MPLS routers, we use ordinary OVS instances with appropriate static OpenFlow rules to simulate the behavior of the MPLS routers.
 
 Grab the frenetic project which provides a vagrant project that we will use to run virtual network. To get frenetic, run the following commands:
 
