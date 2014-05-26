@@ -14,7 +14,7 @@ public class SP extends MapleFunction {
     if (null == dstLoc) {
       return Route.multicast(minSpanningTree(), edgePorts());
     }
-    List<Link> path = shortestPath(hostLocation(p.ethSrc()), dstLoc);
+    List<Link> path = shortestPath(p.ingressPort(), dstLoc);
     return Route.unicast(dstLoc, path);
   }
 }

@@ -8,7 +8,7 @@ public class ECMP extends MapleFunction {
 
   public Route onPacket(Packet p) {
 
-    SwitchPort srcLoc = hostLocation(p.ethSrc());
+    SwitchPort srcLoc = p.ingressPort();
     Set<Long> switches = switches();
     Set<Link> links = links();
     Set<SwitchPort> edgePorts = edgePorts();

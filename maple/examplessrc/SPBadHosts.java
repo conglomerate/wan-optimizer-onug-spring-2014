@@ -16,7 +16,7 @@ public class SPBadHosts extends MapleFunction {
     if (null == dstLoc) {
       return Route.multicast(minSpanningTree(), edgePorts());
     }
-    return Route.unicast(dstLoc, shortestPath(hostLocation(p.ethSrc()), dstLoc));
+    return Route.unicast(dstLoc, shortestPath(p.ingressPort(), dstLoc));
   }
 
 }
