@@ -129,6 +129,15 @@ When the machine is up, we can start the network. Log in to the machine (by runn
 ```
 sudo python /vagrant/topology.py
 ```
+This script will setup a network like this (names of switches are the mininet names):
+
+| Site        | Edge Router | WAN app switch  |
+| ------------|-------------|-----|
+| Branch 1    | s2 | s1 |
+| Branch 2    | s4 | s3 |
+| Data center | s6 | s5 |
+
+The branch edge switches (s2 and s4) connect to s6 over two links each. Each WAN app switch is connected to its site's edge router.
 
 Once the mininet prompt is up, open a second ssh session into the machine (i.e. run `vagrant ssh` in another shell on your host) and run:
 
