@@ -176,3 +176,13 @@ Each controller also exposes this over a REST HTTP API (try `curl` to [http://lo
 ### Demo
 
 We now demonstrate the WAN policy GUI and demonstrate the system using generated traffic. To get the demo GUI, open [http://localhost:8000/maple/vis.html](http://localhost:8000/maple/vis.html). More to come here soon...
+
+In mininet, run the following:
+```
+h5 iperf -s &
+h6 iperf -s &
+h7 iperf -s &
+h1 iperf -c 192.168.0.5 -t 720 &
+h2 iperf -c 192.168.0.6 -t 720
+```
+
