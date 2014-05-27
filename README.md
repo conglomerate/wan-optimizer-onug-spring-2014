@@ -149,7 +149,7 @@ cd controller
 vagrant up
 ```
 
-The controller program is [controller/examplessrc/WANSelector.java](controller/examplessrc/WANSelector.java). Log in to the machine and do the following to compile the controller:
+The controller program is [controller/examplessrc/WANSelector.java](controller/examplessrc/WANSelector.java) (we will explain how it works below). Log in to the machine and do the following to compile the controller:
 
 ```
 cd /vagrant
@@ -175,4 +175,4 @@ Each controller also exposes this over a REST HTTP API (try `curl` to [http://lo
 
 ### Demo
 
-Here we describe how to run through the demo that we showed at the hackathon. Describe how to set up the traffic flows, what buttons to push and what should happen in each state.
+We now demonstrate the WAN policy GUI and demonstrate the system using generated traffic. More to come here soon...
