@@ -1,14 +1,10 @@
 # Enterprise SDN-WAN App from ONUG Spring 2014 Hackathon
 
-Team Conglomerate developed a proof-of-concept enterprise SDN-WAN application
-during the
-[Spring 2014 ONUG Hackathon](http://opennetworkingusergroup.com/agenda/hackathon/).
+Team Conglomerate (David Crosbie, Spiros Eliopoulos, Ed Henry, Eric
+Murray, Andreas Voellmy and Eric Yspeert) developed a proof-of-concept enterprise SDN-WAN application
+during the [Spring 2014 ONUG Hackathon](http://opennetworkingusergroup.com/agenda/hackathon/).
 This repository contains the proof-of-concept system developed during the
 hackathon along with our network simulation setup and demo scripts.
-
-The Conglomerate consists of David Crosbie, Spiros Eliopoulos, Ed Henry, Eric
-Murray, Andreas Voellmy and Eric Yspeert. This team includes a range of skills,
-including network & system admin and architecture and SDN programming.
 
 ## The SDN-WAN Problem
 
