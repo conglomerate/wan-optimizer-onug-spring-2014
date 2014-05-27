@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
-<link rel="stylesheet" href="/maple/bootstrap/css/bootstrap.css">
-<script type="text/javascript" src="/maple/d3/d3.v3.js" charset="utf-8"></script>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+<script type="text/javascript" src="d3/d3.v3.js" charset="utf-8"></script>
 <style>
 body {
   font-family: "Helvetica Neue", Helvetica, Aria, sans-serif;
@@ -339,10 +339,12 @@ www.youtube.com ==> LOW,
             }
         }
 
+        var controllerURL = 'http://localhost:8000';
+
         d3.select('.graph').datum(byt.data).call(chart);
         d3.select('.appgraph').datum(byt_flows.data).call(chart2);
         var interval = setInterval(function() {
-          d3.json('/flowcounters', function(data) {
+          d3.json(controllerURL + '/flowcounters', function(data) {
             update(data);
             // JSON.stringify(byt.data);
             d3.select('.graph').datum(byt.data).call(chart);
@@ -355,7 +357,7 @@ www.youtube.com ==> LOW,
         d3.select('.group button#set').on('click', function() {
 
             var data = JSON.stringify({ "component": "policy", "method": "insert_map", "key":"www.youtube.com", "value":0 });
-            d3.xhr('/db')
+            d3.xhr(controllerURL + '/db')
                 .header("Content-Type", "application/json")
                 .post(data, function(error, data) { });
         });
@@ -363,7 +365,7 @@ www.youtube.com ==> LOW,
         d3.select('.group button#clear').on('click', function() {
 
             var data = JSON.stringify({ "component": "policy", "method": "delete_map", "key":"www.youtube.com" });
-            d3.xhr('/db')
+            d3.xhr(controllerURL + '/db')
                 .header("Content-Type", "application/json")
                 .post(data, function(error, data) { });
         });
@@ -371,14 +373,14 @@ www.youtube.com ==> LOW,
 
         d3.select('.qualitygroup button#high').on('click', function() {
             var data = JSON.stringify({ "component": "broadbandQuality", "method": "write", "value":1 });
-            d3.xhr('/db')
+            d3.xhr(controllerURL + '/db')
                .header("Content-Type", "application/json")
                .post(data, function(error, data) { });
         });
 
         d3.select('.qualitygroup button#nothigh').on('click', function() {
             var data = JSON.stringify({ "component": "broadbandQuality", "method": "write", "value":0 });
-            d3.xhr('/db')
+            d3.xhr(controllerURL + '/db')
                .header("Content-Type", "application/json")
                .post(data, function(error, data) { });
         });
