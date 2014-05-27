@@ -158,7 +158,20 @@ ant
 
 Now we are ready to run the controller for each site. Log in three times to the controller VM and run the following three scripts: `/vagrant/maple-branch1.sh`, `/vagrant/maple-branch2.sh` and `/vagrant/maple-datacenter.sh`. These scripts start three instances of the controller, with each controller listening on a different port. 
 
-Here we describe the overall organization of the controllers, how to start them, where to find the source code, how to get to the GUI (web page).
+After a few seconds, the three sites' SDN switches should connect to each of the three controllers. Each controller provides a command-line interface (CLI), which you can use to check the attached switches. For example, you should be able to see the following on the shell where you ran `/vagrant/maple-branch.sh`:
+
+```
+maple> ports
+switch port port-name port-address      capacity (mb/s) status config tx (kb/s) rx (kb/s) utilization
+------ ---- --------- ------------      --------------- ------ ------ --------- --------- -----------
+1      1    s1-eth1   22:9a:93:5a:19:6d 10000.0         up     []     0.14      0.00      0.00       
+1      2    s1-eth2   f2:7e:29:c8:78:1f 10000.0         up     []     0.14      0.00      0.00       
+1      3    s1-eth3   0a:f1:97:99:a0:7b 10000.0         up     []     0.14      0.00      0.00       
+3 rows
+```
+
+Each controller also exposes this over a REST HTTP API (try `curl` to [http://localhost:8000/ports](http://localhost:8000/ports)) and a web GUI (try [http://localhost:8000/maple/maple.html/ports](http://localhost:8000/maple/maple.html/ports)).
+
 
 ### Demo
 
