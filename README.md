@@ -142,9 +142,23 @@ Please see the scripts (`topology.py` and the `pe_*` scripts) for more details o
 
 ### Controllers
 
-Here we describe the overall organization of the controllers, how to start them, where to find the source code, how to get to the GUI (web page).
+We run one controller per site. Each site using the same control logic, which we wrote using [Maple](http://haskell.cs.yale.edu/wp-content/uploads/2013/08/comm282-voellmy.pdf). To run the controllers, first start up the controller VM:
 
-Change into the `maple` directory and run `vagrant up`, then `vagrant ssh` and `cd /vagrant`. Now run `ant` to build all the Maple controllers. Then, to run a controller, you can do `maple -u classes SP`, for example. We discuss how to run the controllers for the WAN optimization demo below. 
+```
+cd controller
+vagrant up
+```
+
+The controller program is [controller/examplessrc/WANSelector.java](controller/examplessrc/WANSelector.java). Log in to the machine and do the following to compile the controller:
+
+```
+cd /vagrant
+ant
+```
+
+Now we are ready to run the controller for each site. Log in three times to the controller VM and run the following three scripts: `/vagrant/maple-branch1.sh`, `/vagrant/maple-branch2.sh` and `/vagrant/maple-datacenter.sh`. These scripts start three instances of the controller, with each controller listening on a different port. 
+
+Here we describe the overall organization of the controllers, how to start them, where to find the source code, how to get to the GUI (web page).
 
 ### Demo
 
