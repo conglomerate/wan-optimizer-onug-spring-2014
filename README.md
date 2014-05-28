@@ -108,8 +108,11 @@ We borrow the mininet setup from the [Frenetic project's](http://www.frenetic-la
 
 ```
 cd network
+vagrant plugin install vagrant-vbguest
 vagrant up
 ```
+
+(Note: we recommend adding the vagrant-vbguest plugin; this will upgrade the guest additions of the guest in case they do not match your VirtualBox version.)
 
 When the machine is up, we can start the network. Log in to the machine (by running `vagrant ssh`), and then run
 
@@ -142,6 +145,7 @@ We run one controller per site. Each site using the same control logic, which we
 
 ```
 cd controller
+vagrant plugin install vagrant-vbguest
 vagrant up
 ```
 
